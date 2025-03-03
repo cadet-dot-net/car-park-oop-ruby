@@ -2,6 +2,6 @@
 Toy project to implement OOP in Ruby for a car park 
 
 ## Tasks
-- [ ] sketch high-level overview
+- [x] sketch high-level overview
 - [ ] create basic objects for classes
 - [ ] write tests for requirements
