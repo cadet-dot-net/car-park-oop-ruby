@@ -1,22 +1,24 @@
+# frozen_string_literal: true
+
+# Car Park using OOP
 class CarPark
-  attr_reader :spots
-  attr_reader :size
+  attr_reader :spots, :size
 
   def initialize(size)
     @size = size
     @spots = Array.new(@size, nil)
   end
 
-  def get_available_spots
+  def available_spots
     @spots.select(&:nil?)
   end
 
-  def get_unavailable_spots
+  def unavailable_spots
     @spots.compact
   end
-  
-  def get_state
-    case self.get_available_spots
+
+  def state
+    case available_spots
     when @size then :empty
     when 0 then :full
     when 0...@size then :occupied
@@ -27,19 +29,20 @@ class CarPark
     spaces = spaces_by_vehicle_type(vehicle_type)
     new_spots = @spots
 
-    new_spots.prepend(spaces)
+    spaces.each {|space| new_spots.unshift(space)}
+
+    # new_spots.unshift(spaces)
   end
 
   # private
 
   def spaces_by_vehicle_type(vehicle_type)
-    spaces =
-      case vehicle_type
-      when :motorcycle then 1
-      when :car then 2
-      when :van then 3
-      end
+    spaces = {
+      motorcycle: 1,
+      car: 2,
+      van: 3
+    }
 
-    (1..spaces).map { |space| [vehicle_type, space] }
+    Array.new(spaces[vehicle_type]) { |i| [vehicle_type, i + 1] }
   end
 end
