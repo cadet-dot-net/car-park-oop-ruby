@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rubocop/rake_task'
 
 task default: %w[lint test]
@@ -12,5 +14,6 @@ task :run do
 end
 
 task :test do
-  ruby 'test/car_park_test.rb'
+  test_files = Dir.glob('test/**/*_test.rb')
+  ruby "-I test #{test_files.join(' ')}"
 end
