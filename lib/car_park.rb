@@ -26,19 +26,31 @@ class CarPark
     return unless vehicle.class.include?(Vehicle)
     return if state == :full
 
-    possible_spot_types = vehicle.spot_types
-    spot_type = choose_spot_type(possible_spot_types)
+    alter_spot(choose_spot_type(vehicle), :add)
+  end
 
-    unless spot_type.nil?
-      @spots[spot_type] -= 1
-      spot_type
-    end
+  def leave(vehicle)
+    return unless vehicle.class.include?(Vehicle)
+
+    alter_spot(choose_spot_type(vehicle), :remove)
   end
 
   private
 
-  def choose_spot_type(spot_types)
-    spot_types.each do |spot_type|
+  def alter_spot(spot_type, action)
+    return nil unless spot_type
+    amount = @@spot_type_size[spot_type]
+
+    case action
+    when :add then @spots[spot_type] -= amount
+    when :remove then @spots[spot_type] += amount
+    end
+    
+    spot_type
+  end
+
+  def choose_spot_type(vehicle)
+    vehicle.spot_types.each do |spot_type|
       spot_size = @@spot_type_size[spot_type]
       spots_left = @spots[spot_type]
       
@@ -46,7 +58,7 @@ class CarPark
         return spot_type
       end
     end
-    
+
     return nil
   end
 end

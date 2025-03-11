@@ -60,7 +60,7 @@ describe 'CarPark' do
       original_spots_sum = @original_spots.values.sum
 
       @car_park.park(car)
-      assert_equal original_spots_sum - 1, @car_park.spots.values.sum
+      assert_equal original_spots_sum - 2, @car_park.spots.values.sum
     end
 
     it 'returns false when parking lot is full' do
@@ -78,7 +78,7 @@ describe 'CarPark' do
       assert_equal :regular, @car_park.park(Vehicle::Car.new)  
       assert_equal :large, @car_park.park(Vehicle::Van.new)  
 
-      assert_equal @original_spots.values.sum - 3, @car_park.spots.values.sum
+      assert_equal @original_spots.values.sum - 6, @car_park.spots.values.sum
     end
 
     it 'parks vehicles in their next preferred spot types when the first type is unavailable' do
