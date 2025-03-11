@@ -4,7 +4,7 @@ require_relative './vehicles'
 
 # Car Park using OOP
 class CarPark
-  @@space_types = { compact: 1, regular: 2, large: 3 }
+  @@spot_type_size = { compact: 1, regular: 2, large: 3 }
 
   attr_reader :spots, :size
 
@@ -24,11 +24,29 @@ class CarPark
 
   def park(vehicle)
     return unless vehicle.class.include?(Vehicle)
+    return if state == :full
 
-    space_type = vehicle.space_type
-    spot_size = @@space_types[space_type]
+    possible_spot_types = vehicle.spot_types
+    spot_type = choose_spot_type(possible_spot_types)
 
-    return false if @spots[space_type] < spot_size
-    @spots[space_type] -= 1
+    unless spot_type.nil?
+      @spots[spot_type] -= 1
+      spot_type
+    end
+  end
+
+  private
+
+  def choose_spot_type(spot_types)
+    spot_types.each do |spot_type|
+      spot_size = @@spot_type_size[spot_type]
+      spots_left = @spots[spot_type]
+      
+      if spots_left >= spot_size
+        return spot_type
+      end
+    end
+    
+    return nil
   end
 end

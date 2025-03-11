@@ -2,20 +2,14 @@
 
 # Namespace - Vehicle module with vehicle classes
 module Vehicle
-  attr_reader :space_type
-
-  @@vehicle_space_types = {
-    car: %i[compact regular],
-    motorcycle: :compact,
-    van: :large
-  }
+  attr_reader :spot_types
 
   # Representation of a car object
   class Car
     include Vehicle
 
     def initialize
-      @space_type = @@vehicle_space_types[:car].sample
+      @spot_types = %i[regular compact]
     end
   end
 
@@ -24,7 +18,7 @@ module Vehicle
     include Vehicle
 
     def initialize
-      @space_type = @@vehicle_space_types[:motorcycle]
+      @spot_types = %i[compact regular large]
     end
   end
 
@@ -33,7 +27,7 @@ module Vehicle
     include Vehicle
 
     def initialize
-      @space_type = @@vehicle_space_types[:van]
+      @spot_types = %i[large]
     end
   end
 end
