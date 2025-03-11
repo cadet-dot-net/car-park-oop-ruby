@@ -10,7 +10,7 @@ class CarPark
 
   def initialize
     @spots = { compact: 30, regular: 50, large: 20 }
-    @max_spots = @spots
+    @max_spots = @spots.dup
     @size = @max_spots.values.sum
   end
 
