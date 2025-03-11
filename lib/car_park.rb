@@ -1,48 +1,34 @@
 # frozen_string_literal: true
 
+require_relative './vehicles'
+
 # Car Park using OOP
 class CarPark
+  @@space_types = { compact: 1, regular: 2, large: 3 }
+
   attr_reader :spots, :size
 
-  def initialize(size)
-    @size = size
-    @spots = Array.new(@size, nil)
-  end
-
-  def available_spots
-    @spots.select(&:nil?)
-  end
-
-  def unavailable_spots
-    @spots.compact
+  def initialize
+    @spots = { compact: 30, regular: 50, large: 20 }
+    @max_spots = @spots
+    @size = @max_spots.values.sum
   end
 
   def state
-    case available_spots
-    when @size then :empty
-    when 0 then :full
-    when 0...@size then :occupied
+    case
+    when @spots == @max_spots then :empty
+    when @spots.values.all?(0) then :full
+    else :occupied
     end
   end
 
-  def park(vehicle_type)
-    spaces = spaces_by_vehicle_type(vehicle_type)
-    new_spots = @spots
+  def park(vehicle)
+    return unless vehicle.class.include?(Vehicle)
 
-    spaces.each {|space| new_spots.unshift(space)}
+    space_type = vehicle.space_type
+    spot_size = @@space_types[space_type]
 
-    # new_spots.unshift(spaces)
-  end
-
-  # private
-
-  def spaces_by_vehicle_type(vehicle_type)
-    spaces = {
-      motorcycle: 1,
-      car: 2,
-      van: 3
-    }
-
-    Array.new(spaces[vehicle_type]) { |i| [vehicle_type, i + 1] }
+    return false if @spots[space_type] < spot_size
+    @spots[space_type] -= 1
   end
 end
