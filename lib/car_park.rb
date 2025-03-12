@@ -31,6 +31,7 @@ class CarPark
 
   def leave(vehicle)
     return unless vehicle.class.include?(Vehicle)
+    return if state == :full
 
     alter_spot(choose_spot_type(vehicle), :remove)
   end
